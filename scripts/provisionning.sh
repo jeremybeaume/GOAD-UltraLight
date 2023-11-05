@@ -59,8 +59,7 @@ run_ansible ad-parent_domain.yml
 
 # Wait after the child domain creation before adding servers
 run_ansible ad-child_domain.yml
-echo "$INFO Waiting 5 minutes for the child domain to be ready"
-sleep 5m
+read -t 300 -p "$INFO Waiting 5 minutes for the child domain to be ready [ENTER to skip]"
 
 run_ansible ad-members.yml
 

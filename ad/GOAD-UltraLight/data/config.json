@@ -1,0 +1,231 @@
+{
+"lab" : {
+    "hosts" : {
+        "dc02" : {
+            "hostname" : "winterfell",
+            "type" : "dc",
+            "local_admin_password": "NgtI75cKV+Pu",
+            "domain" : "north.sevenkingdoms.local",
+            "path" : "DC=north,DC=sevenkingdoms,DC=local",
+            "local_groups" : {
+                "Administrators" : [
+                    "north\\eddard.stark",
+                    "north\\catelyn.stark",
+                    "north\\robb.stark"
+                ],
+                "Remote Desktop Users" : [
+                    "north\\Stark"
+                ]
+            },
+            "scripts" : [
+                "asrep_roasting.ps1",
+                "constrained_delegation_use_any.ps1",
+                "constrained_delegation_kerb_only.ps1",
+                "ntlm_relay.ps1",
+                "responder.ps1",
+                "gpo_abuse.ps1",
+                "rdp_scheduler.ps1"
+            ],
+            "vulns" : ["disable_firewall", "directory", "credentials", "autologon", "files", "ntlmdowngrade", "enable_llmnr", "enable_nbt-ns"],
+            "vulns_vars" : {
+                "directory": {
+                    "setup": "c:\\setup"
+                },
+                "credentials" : {
+                    "TERMSRV/castelblack": {
+                        "username" : "north\\robb.stark",
+                        "secret"   : "sexywolfy",
+                        "runas"    : "north\\robb.stark",
+                        "runas_password" : "sexywolfy"
+                    }
+                },
+                "autologon" : {
+                    "robb.stark" : {
+                        "username" : "north\\robb.stark",
+                        "password" : "sexywolfy"
+                    }
+                },
+                "files" : {
+                    "rdp" : {
+                        "src" : "dc02/bot_rdp.ps1",
+                        "dest" : "c:\\setup\\bot_rdp.ps1"
+                    }
+                }
+            }
+        },
+        "srv02" : {
+            "hostname" : "castelblack",
+            "type" : "server",
+            "local_admin_password": "NgtI75cKV+Pu",
+            "domain" : "north.sevenkingdoms.local",
+            "path" : "DC=north,DC=sevenkingdoms,DC=local",
+            "use_laps": false,
+            "local_groups" : {
+                "Administrators" : [
+                    "north\\jeor.mormont"
+                ],
+                "Remote Desktop Users" : [
+                    "north\\Night Watch",
+                    "north\\Mormont",
+                    "north\\Stark"
+                ]
+            },
+            "scripts" : [],
+            "vulns" : ["disable_firewall", "openshares"],
+            "vulns_vars" : {
+            }
+        }
+    },
+    "domains" : {
+        "north.sevenkingdoms.local" : {
+            "dc": "dc02",
+            "ip": "192.168.56.11",
+            "domain_password" : "NgtI75cKV+Pu",
+            "netbios_name": "NORTH",
+            "trust" : "",
+            "laps_path": "OU=Laps,DC=north,DC=sevenkingdoms,DC=local",
+            "organisation_units" : {
+            },
+            "groups" : {
+                "universal" : {},
+                "global" : {
+                    "Stark" : {
+                        "managed_by" : "eddard.stark",
+                        "path" : "CN=Users,DC=North,DC=sevenkingdoms,DC=local"
+                    },
+                    "Night Watch" : {
+                        "managed_by" : "jeor.mormont",
+                        "path" : "CN=Users,DC=North,DC=sevenkingdoms,DC=local"
+                    },
+                    "Mormont" : {
+                        "managed_by" : "jeor.mormont",
+                        "path" : "CN=Users,DC=North,DC=sevenkingdoms,DC=local"
+                    }
+                },
+                "domainlocal" : {
+                    "AcrossTheSea" : {
+                        "path" : "CN=Users,DC=North,DC=sevenkingdoms,DC=local"
+                    }
+                }
+            },
+            "multi_domain_groups_member" : {
+            },
+            "acls" : {
+                "anonymous_rpc" : {"for": "NT AUTHORITY\\ANONYMOUS LOGON", "to": "DC=North,DC=sevenkingdoms,DC=local", "right": "ReadProperty", "inheritance": "All"},
+                "anonymous_rpc2" : {"for": "NT AUTHORITY\\ANONYMOUS LOGON", "to": "DC=North,DC=sevenkingdoms,DC=local", "right": "GenericExecute", "inheritance": "All"}
+            },
+            "users" : {
+                "arya.stark" : {
+                    "firstname"   : "Arya",
+                    "surname"     : "Stark",
+                    "password"    : "Needle",
+                    "city"        : "Winterfell",
+                    "description" : "Arya Stark",
+                    "groups"      : ["Stark"],
+                    "path"        : "CN=Users,DC=North,DC=sevenkingdoms,DC=local"
+                },
+                "eddard.stark" : {
+                    "firstname"   : "Eddard",
+                    "surname"     : "Stark",
+                    "password"    : "FightP3aceAndHonor!",
+                    "city"        : "King's Landing",
+                    "description" : "Eddard Stark",
+                    "groups"      : ["Stark", "Domain Admins"],
+                    "path"        : "CN=Users,DC=North,DC=sevenkingdoms,DC=local"
+                },
+                "catelyn.stark" : {
+                    "firstname"   : "Catelyn",
+                    "surname"     : "Stark",
+                    "password"    : "robbsansabradonaryarickon",
+                    "city"        : "King's Landing",
+                    "description" : "Catelyn Stark",
+                    "groups"      : ["Stark"],
+                    "path"        : "CN=Users,DC=North,DC=sevenkingdoms,DC=local"
+                },
+                "robb.stark" : {
+                    "firstname"   : "Robb",
+                    "surname"     : "Stark",
+                    "password"    : "sexywolfy",
+                    "city"        : "Winterfell",
+                    "description" : "Robb Stark",
+                    "groups"      : ["Stark"],
+                    "path"        : "CN=Users,DC=North,DC=sevenkingdoms,DC=local"
+                },
+                "sansa.stark" : {
+                    "firstname"   : "Sansa",
+                    "surname"     : "Stark",
+                    "password"    : "=_)(*&^%$#@!qazaq",
+                    "city"        : "Winterfell",
+                    "description" : "Sansa Stark",
+                    "groups"      : ["Stark"],
+                    "path"        : "CN=Users,DC=North,DC=sevenkingdoms,DC=local"
+                },
+                "brandon.stark" : {
+                    "firstname"   : "Brandon",
+                    "surname"     : "Stark",
+                    "password"    : "iseedeadpeople",
+                    "city"        : "Winterfell",
+                    "description" : "Brandon Stark",
+                    "groups"      : ["Stark"],
+                    "path"        : "CN=Users,DC=North,DC=sevenkingdoms,DC=local"
+                },
+                "rickon.stark" : {
+                    "firstname"   : "Rickon",
+                    "surname"     : "Stark",
+                    "password"    : "Winter2022",
+                    "city"        : "Winterfell",
+                    "description" : "Rickon Stark",
+                    "groups"      : ["Stark"],
+                    "path"        : "CN=Users,DC=North,DC=sevenkingdoms,DC=local"
+                },
+                "hodor" : {
+                    "firstname"   : "hodor",
+                    "surname"     : "hodor",
+                    "password"    : "hodor",
+                    "city"        : "Winterfell",
+                    "description" : "Brainless Giant",
+                    "groups"      : ["Stark"],
+                    "path"        : "CN=Users,DC=North,DC=sevenkingdoms,DC=local"
+                },
+                "jon.snow" : {
+                    "firstname"   : "Jon",
+                    "surname"     : "Snow",
+                    "password"    : "iknownothing",
+                    "city"        : "Castel Black",
+                    "description" : "Jon Snow",
+                    "groups"      : ["Stark", "Night Watch"],
+                    "path"        : "CN=Users,DC=North,DC=sevenkingdoms,DC=local",
+                    "spns"        : ["HTTP/thewall.north.sevenkingdoms.local"]
+                },
+                "samwell.tarly" : {
+                    "firstname"   : "Samwell",
+                    "surname"     : "Tarly",
+                    "password"    : "Heartsbane",
+                    "city"        : "Castel Black",
+                    "description" : "Samwell Tarly (Password : Heartsbane)",
+                    "groups"      : ["Night Watch"],
+                    "path"        : "CN=Users,DC=North,DC=sevenkingdoms,DC=local"
+                },
+                "jeor.mormont" : {
+                    "firstname"   : "Jeor",
+                    "surname"     : "Mormont",
+                    "password"    : "_L0ngCl@w_",
+                    "city"        : "Castel Black",
+                    "description" : "Jeor Mormont",
+                    "groups"      : ["Night Watch", "Mormont"],
+                    "path"        : "CN=Users,DC=North,DC=sevenkingdoms,DC=local"
+                },
+                "sql_svc" : {
+                    "firstname"   : "sql",
+                    "surname"     : "service",
+                    "password"    : "YouWillNotKerboroast1ngMeeeeee",
+                    "city"        : "-",
+                    "description" : "sql service",
+                    "groups"      : [],
+                    "path"        : "CN=Users,DC=North,DC=sevenkingdoms,DC=local",
+                    "spns"        : ["MSSQLSvc/castelblack.north.sevenkingdoms.local:1433","MSSQLSvc/castelblack.north.sevenkingdoms.local"]
+                }
+            }
+        }
+    }
+}}
